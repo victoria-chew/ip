@@ -20,8 +20,9 @@ public class Kevin {
                 break;
             }
             else if (input.equals("list")) {
+                System.out.println("Here are the tasks in your list:");
                 for (int i = 0; i < count; i++) {
-                    System.out.println((i + 1) + ". " + tasks[i]);
+                    System.out.println((i + 1) + "." + tasks[i]);
                 }
             }
             else if (input.startsWith("mark ")) {
@@ -41,6 +42,41 @@ public class Kevin {
 
                 System.out.println("OK, I've marked this task as not done yet:");
                 System.out.println(tasks[index]);
+            }
+            else if (input.startsWith("todo ")) {
+                String desc = input.substring(5).trim();
+                tasks[count] = new Todo(desc);
+                System.out.println("Got it. I've added this task:");
+                System.out.println("  " + tasks[count]);
+                count++;
+                System.out.println("Now you have " + count + " tasks in the list.");
+            }
+            else if (input.startsWith("deadline ")) {
+                String rest = input.substring(9).trim(); // after "deadline"
+                String[] parts = rest.split(" /by ", 2);
+                String desc = parts[0].trim();
+                String by = parts[1].trim();
+
+                tasks[count] = new Deadline(desc, by);
+                System.out.println("Got it. I've added this task:");
+                System.out.println("  " + tasks[count]);
+                count++;
+                System.out.println("Now you have " + count + " tasks in the list.");
+            }
+            else if (input.startsWith("event ")) {
+                String rest = input.substring(6).trim(); // after "event"
+                String[] partsFrom = rest.split(" /from ", 2);
+                String desc = partsFrom[0].trim();
+
+                String[] partsTo = partsFrom[1].split(" /to ", 2);
+                String from = partsTo[0].trim();
+                String to = partsTo[1].trim();
+
+                tasks[count] = new Event(desc, from, to);
+                System.out.println("Got it. I've added this task:");
+                System.out.println("  " + tasks[count]);
+                count++;
+                System.out.println("Now you have " + count + " tasks in the list.");
             }
             else {
                 tasks[count] = new Task(input);
