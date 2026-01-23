@@ -41,7 +41,7 @@ public class Kevin {
             }
 
             //MARK COMMAND
-            if (input.startsWith("mark")) {
+            else if (input.startsWith("mark")) {
                 String[] parts = input.split("\\s+");
 
                 // Error: missing task number
@@ -72,7 +72,7 @@ public class Kevin {
             }
 
             //UNMARK COMMAND
-            if (input.startsWith("unmark")) {
+            else if (input.startsWith("unmark")) {
                 String[] parts = input.split("\\s+");
 
                 // Error: missing task number
@@ -103,7 +103,7 @@ public class Kevin {
             }
 
             //TODO COMMAND
-            if (input.equals("todo") || input.startsWith("todo ")) {
+            else if (input.equals("todo") || input.startsWith("todo ")) {
                 // Extract description after "todo"
                 String desc = input.length() > 4 ? input.substring(4).trim() : "";
 
@@ -123,7 +123,7 @@ public class Kevin {
             }
 
             //DEADLINE COMMAND
-            if (input.equals("deadline") || input.startsWith("deadline ")) {
+            else if (input.equals("deadline") || input.startsWith("deadline ")) {
                 String rest = input.length() > 8 ? input.substring(8).trim() : "";
 
                 // Error: empty description
@@ -159,7 +159,7 @@ public class Kevin {
             }
 
             //EVENT COMMAND
-            if (input.equals("event") || input.startsWith("event ")) {
+            else if (input.equals("event") || input.startsWith("event ")) {
                 String rest = input.length() > 5 ? input.substring(5).trim() : "";
 
                 // Error: empty description
@@ -199,6 +199,49 @@ public class Kevin {
                 System.out.println("  " + tasks[count]);
                 count++;
                 System.out.println("Now you have " + count + " tasks in the list.");
+                continue;
+            }
+
+            //DELETE COMMAND
+            else if (input.startsWith("delete")) {
+                String[] parts = input.split("\\s+");
+
+                // Error: missing task number
+                if (parts.length < 2) {
+                    showError("Please specify a task number. Example: delete 3");
+                    continue;
+                }
+
+                try {
+                    int index = Integer.parseInt(parts[1]) - 1;
+
+                    // Error: index out of bounds
+                    if (index < 0 || index >= count) {
+                        showError("That task number is out of range.");
+                        continue;
+                    }
+
+                    // Save the task being deleted (for printing)
+                    Task removed = tasks[index];
+
+                    // Shift tasks left to fill the gap
+                    for (int i = index; i < count - 1; i++) {
+                        tasks[i] = tasks[i + 1];
+                    }
+
+                    // Clear last slot and update count
+                    tasks[count - 1] = null;
+                    count--;
+
+                    // Print confirmation
+                    System.out.println("Noted. I've removed this task:");
+                    System.out.println("  " + removed);
+                    System.out.println("Now you have " + count + " tasks in the list.");
+
+                } catch (NumberFormatException e) {
+                    showError("Task number must be an integer. Example: delete 3");
+                }
+
                 continue;
             }
 
