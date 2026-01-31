@@ -11,9 +11,10 @@ public class Kevin {
         // Scanner to read user input from standard input
         Scanner scanner = new Scanner(System.in);
 
-        // Fixed-size array to store tasks (assumption: max 100 tasks)
-        Task[] tasks = new Task[100];
-        int count = 0; // number of tasks currently stored
+        // Instead of storng count and tasks
+        Storage storage = new Storage();
+        TaskList taskList = new TaskList(100, storage);
+        taskList.load();
 
         // Initial greeting
         System.out.println("Hello! I'm Kevin");
@@ -30,79 +31,65 @@ public class Kevin {
                 break; // terminate the loop and program
             }
 
-            //LIST COMMAND
+            //LIST COMMAND (edited)
             if (input.equals("list")) {
-                System.out.println("Here are the tasks in your list:");
-                for (int i = 0; i < count; i++) {
-                    // Display each task with a 1-based index
-                    System.out.println((i + 1) + "." + tasks[i]);
-                }
+                System.out.println(taskList.formatList());
                 continue;
             }
 
-            //MARK COMMAND
+            //MARK COMMAND (edited)
             else if (input.startsWith("mark")) {
                 String[] parts = input.split("\\s+");
 
-                // Error: missing task number
                 if (parts.length < 2) {
                     showError("Please specify a task number. Example: mark 2");
                     continue;
                 }
 
                 try {
-                    int index = Integer.parseInt(parts[1]) - 1;
+                    int taskNumber = Integer.parseInt(parts[1]);
+                    Task t = taskList.mark(taskNumber);
 
-                    // Error: index out of bounds
-                    if (index < 0 || index >= count) {
-                        showError("That task number is out of range.");
-                        continue;
-                    }
-
-                    // Mark task as done
-                    tasks[index].markDone();
                     System.out.println("Nice! I've marked this task as done:");
-                    System.out.println(tasks[index]);
+                    System.out.println(t);
 
                 } catch (NumberFormatException e) {
-                    // Error: non-integer task number
                     showError("Task number must be an integer. Example: mark 2");
+                } catch (IllegalArgumentException e) {
+                    // TaskList throws this when out of range
+                    showError(e.getMessage());
                 }
+
                 continue;
             }
 
-            //UNMARK COMMAND
+
+            //UNMARK COMMAND (edited)
             else if (input.startsWith("unmark")) {
                 String[] parts = input.split("\\s+");
 
-                // Error: missing task number
                 if (parts.length < 2) {
                     showError("Please specify a task number. Example: unmark 2");
                     continue;
                 }
 
                 try {
-                    int index = Integer.parseInt(parts[1]) - 1;
+                    int taskNumber = Integer.parseInt(parts[1]);
+                    Task t = taskList.unmark(taskNumber);
 
-                    // Error: index out of bounds
-                    if (index < 0 || index >= count) {
-                        showError("That task number is out of range.");
-                        continue;
-                    }
-
-                    // Mark task as not done
-                    tasks[index].markUndone();
                     System.out.println("OK, I've marked this task as not done yet:");
-                    System.out.println(tasks[index]);
+                    System.out.println(t);
 
                 } catch (NumberFormatException e) {
-                    // Error: non-integer task number
                     showError("Task number must be an integer. Example: unmark 2");
+                } catch (IllegalArgumentException e) {
+                    showError(e.getMessage());
                 }
+
                 continue;
             }
 
-            //TODO COMMAND
+            //TODO COMMAND (edited)
             else if (input.equals("todo") || input.startsWith("todo ")) {
                 // Extract description after "todo"
                 String desc = input.length() > 4 ? input.substring(4).trim() : "";
@@ -114,15 +101,14 @@ public class Kevin {
                 }
 
                 // Create and store Todo task
-                tasks[count] = new Todo(desc);
+                taskList.add(new Todo(desc));
                 System.out.println("Got it. I've added this task:");
-                System.out.println("  " + tasks[count]);
-                count++;
-                System.out.println("Now you have " + count + " tasks in the list.");
+                System.out.println("  " + taskList.get(taskList.size()));
+                System.out.println("Now you have " + taskList.size() + " tasks in the list.");
                 continue;
             }
 
-            //DEADLINE COMMAND
+            //DEADLINE COMMAND (edited)
             else if (input.equals("deadline") || input.startsWith("deadline ")) {
                 String rest = input.length() > 8 ? input.substring(8).trim() : "";
 
@@ -150,15 +136,15 @@ public class Kevin {
                 }
 
                 // Create and store Deadline task
-                tasks[count] = new Deadline(desc, by);
+                taskList.add(new Deadline(desc, by));
+
                 System.out.println("Got it. I've added this task:");
-                System.out.println("  " + tasks[count]);
-                count++;
-                System.out.println("Now you have " + count + " tasks in the list.");
+                System.out.println("  " + taskList.get(taskList.size()));
+                System.out.println("Now you have " + taskList.size() + " tasks in the list.");
                 continue;
             }
 
-            //EVENT COMMAND
+            //EVENT COMMAND (edited)
             else if (input.equals("event") || input.startsWith("event ")) {
                 String rest = input.length() > 5 ? input.substring(5).trim() : "";
 
@@ -194,52 +180,34 @@ public class Kevin {
                 }
 
                 // Create and store Event task
-                tasks[count] = new Event(desc, from, to);
+                taskList.add(new Event(desc, from, to));
                 System.out.println("Got it. I've added this task:");
-                System.out.println("  " + tasks[count]);
-                count++;
-                System.out.println("Now you have " + count + " tasks in the list.");
+                System.out.println("  " + taskList.get(taskList.size()));
+                System.out.println("Now you have " + taskList.size() + " tasks in the list.");
                 continue;
             }
 
-            //DELETE COMMAND
+            //DELETE COMMAND (edited)
             else if (input.startsWith("delete")) {
                 String[] parts = input.split("\\s+");
 
-                // Error: missing task number
                 if (parts.length < 2) {
                     showError("Please specify a task number. Example: delete 3");
                     continue;
                 }
 
                 try {
-                    int index = Integer.parseInt(parts[1]) - 1;
+                    int taskNumber = Integer.parseInt(parts[1]);
+                    Task removed = taskList.delete(taskNumber);
 
-                    // Error: index out of bounds
-                    if (index < 0 || index >= count) {
-                        showError("That task number is out of range.");
-                        continue;
-                    }
-
-                    // Save the task being deleted (for printing)
-                    Task removed = tasks[index];
-
-                    // Shift tasks left to fill the gap
-                    for (int i = index; i < count - 1; i++) {
-                        tasks[i] = tasks[i + 1];
-                    }
-
-                    // Clear last slot and update count
-                    tasks[count - 1] = null;
-                    count--;
-
-                    // Print confirmation
                     System.out.println("Noted. I've removed this task:");
                     System.out.println("  " + removed);
-                    System.out.println("Now you have " + count + " tasks in the list.");
+                    System.out.println("Now you have " + taskList.size() + " tasks in the list.");
 
                 } catch (NumberFormatException e) {
                     showError("Task number must be an integer. Example: delete 3");
+                } catch (IllegalArgumentException e) {
+                    showError(e.getMessage());
                 }
 
                 continue;

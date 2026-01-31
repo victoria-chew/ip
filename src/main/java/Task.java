@@ -15,6 +15,20 @@ public class Task {
         isDone = false;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public boolean isDone() {
+        return isDone;
+    }
+
+    public String toFileString() {
+        // Default: treat as Todo-like storage
+        // Format: T | doneFlag | description
+        return "T | " + (isDone ? "1" : "0") + " | " + description;
+    }
+
     @Override
     public String toString() {
         return (isDone ? "[X] " : "[ ] ") + description;
