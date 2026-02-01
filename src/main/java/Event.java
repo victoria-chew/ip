@@ -1,29 +1,37 @@
-public class Event extends Task {
-    private final String from;
-    private final String to;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
-    public Event(String description, String from, String to) {
+public class Event extends Task {
+    private static final DateTimeFormatter OUTPUT_FORMAT = DateTimeFormatter.ofPattern("MMM dd yyyy HH:mm");
+
+    private LocalDateTime from;
+    private LocalDateTime to;
+
+    public Event(String description, LocalDateTime from, LocalDateTime to) {
         super(description);
         this.from = from;
         this.to = to;
     }
 
-    public String getFrom() {
+    public LocalDateTime getFrom() {
         return from;
     }
 
-    public String getTo() {
+    public LocalDateTime getTo() {
         return to;
     }
 
     @Override
     public String toFileString() {
-        return "E | " + (isDone() ? "1" : "0") + " | " + getDescription() + " | " + from + " | " + to;
+        return "E | " + (isDone() ? "1" : "0") + " | " + getDescription()
+                + " | " + from.format(DateTimeUtil.INPUT)
+                + " | " + to.format(DateTimeUtil.INPUT);
     }
-
 
     @Override
     public String toString() {
-        return "[E]" + super.toString() + " (from: " + from + " to: " + to + ")";
+        return "[E]" + getStatusIcon() + " " + getDescription()
+                + " (from: " + DateTimeUtil.format(from)
+                + " to: " + DateTimeUtil.format(to) + ")";
     }
 }

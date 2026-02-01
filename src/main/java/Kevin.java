@@ -1,4 +1,6 @@
 import java.util.Scanner;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Kevin {
 
@@ -108,7 +110,7 @@ public class Kevin {
                 continue;
             }
 
-            //DEADLINE COMMAND (edited)
+            //DEADLINE COMMAND (Level 8: LocalDateTime)
             else if (input.equals("deadline") || input.startsWith("deadline ")) {
                 String rest = input.length() > 8 ? input.substring(8).trim() : "";
 
@@ -120,31 +122,36 @@ public class Kevin {
 
                 // Error: missing /by
                 if (!rest.contains(" /by ")) {
-                    showError("Deadline format: deadline <description> /by <time>");
+                    showError("Deadline format: deadline <description> /by <yyyy-MM-dd HHmm>");
                     continue;
                 }
 
                 // Split description and deadline time
                 String[] parts = rest.split(" /by ", 2);
                 String desc = parts[0].trim();
-                String by = parts[1].trim();
+                String byStr = parts[1].trim();
 
                 // Error: missing fields
-                if (desc.isEmpty() || by.isEmpty()) {
-                    showError("Deadline format: deadline <description> /by <time>");
+                if (desc.isEmpty() || byStr.isEmpty()) {
+                    showError("Deadline format: deadline <description> /by <yyyy-MM-dd HHmm>");
                     continue;
                 }
 
                 // Create and store Deadline task
-                taskList.add(new Deadline(desc, by));
+                try {
+                    LocalDateTime by = DateTimeUtil.parse(byStr);
+                    taskList.add(new Deadline(desc, by));
 
-                System.out.println("Got it. I've added this task:");
-                System.out.println("  " + taskList.get(taskList.size()));
-                System.out.println("Now you have " + taskList.size() + " tasks in the list.");
+                    System.out.println("Got it. I've added this task:");
+                    System.out.println("  " + taskList.get(taskList.size()));
+                    System.out.println("Now you have " + taskList.size() + " tasks in the list.");
+                } catch (Exception e) {
+                    showError("Invalid date. Use yyyy-MM-dd HHmm (e.g. 2026-01-01 1600)");
+                }
                 continue;
             }
 
-            //EVENT COMMAND (edited)
+            // EVENT COMMAND (Level 8: LocalDateTime)
             else if (input.equals("event") || input.startsWith("event ")) {
                 String rest = input.length() > 5 ? input.substring(5).trim() : "";
 
@@ -154,36 +161,44 @@ public class Kevin {
                     continue;
                 }
 
-                // Error: missing /from or /to
-                if (!rest.contains(" /from ") || !rest.contains(" /to ")) {
-                    showError("Event format: event <description> /from <start> /to <end>");
-                    continue;
-                }
-
-                // Extract description, start time, and end time
+                // Split into: desc |from ... /to ...
                 String[] partsFrom = rest.split(" /from ", 2);
-                String desc = partsFrom[0].trim();
-                String[] partsTo = partsFrom[1].split(" /to ", 2);
-
-                if (partsTo.length < 2) {
-                    showError("Event format: event <description> /from <start> /to <end>");
+                if (partsFrom.length < 2) {
+                    showError("Event format: event <description> /from <yyyy-MM-dd HH:mm> /to <yyyy-MM-dd HH:mm>");
                     continue;
                 }
 
-                String from = partsTo[0].trim();
-                String to = partsTo[1].trim();
+                String desc = partsFrom[0].trim();
+
+                // Split into: from | to
+                String[] partsTo = partsFrom[1].split(" /to ", 2);
+                if (partsTo.length < 2) {
+                    showError("Event format: event <description> /from <yyyy-MM-dd HH:mm> /to <yyyy-MM-dd HH:mm>");
+                    continue;
+                }
+
+                String fromStr = partsTo[0].trim();
+                String toStr = partsTo[1].trim();
 
                 // Error: missing any field
-                if (desc.isEmpty() || from.isEmpty() || to.isEmpty()) {
-                    showError("Event format: event <description> /from <start> /to <end>");
+                if (desc.isEmpty() || fromStr.isEmpty() || toStr.isEmpty()) {
+                    showError("Event format: event <description> /from <yyyy-MM-dd HH:mm> /to <yyyy-MM-dd HH:mm>");
                     continue;
                 }
 
-                // Create and store Event task
-                taskList.add(new Event(desc, from, to));
-                System.out.println("Got it. I've added this task:");
-                System.out.println("  " + taskList.get(taskList.size()));
-                System.out.println("Now you have " + taskList.size() + " tasks in the list.");
+                try {
+                    LocalDateTime from = DateTimeUtil.parse(fromStr);
+                    LocalDateTime to = DateTimeUtil.parse(toStr);
+
+                    taskList.add(new Event(desc, from, to));
+
+                    System.out.println("Got it. I've added this task:");
+                    System.out.println("  " + taskList.get(taskList.size()));
+                    System.out.println("Now you have " + taskList.size() + " tasks in the list.");
+                } catch (Exception e) {
+                    showError("Invalid date-time. Use yyyy-MM-dd HH:mm (e.g. 2026-02-01 14:00)");
+                }
+
                 continue;
             }
 

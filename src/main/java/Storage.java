@@ -2,6 +2,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Storage {
 
@@ -62,8 +64,8 @@ public class Storage {
     private Task parseTask(String line) {
         // Format examples:
         // T | 1 | read book
-        // D | 0 | return book | Sunday
-        // E | 1 | project meeting | Mon 2pm | 4pm
+        // D | 0 | return book | 2026-02-01 14:00
+        // E | 1 | project meeting | 2026-02-01 14:00 | 2026-02-01 16:00
 
         String[] parts = line.split(" \\| ");
 
@@ -78,10 +80,13 @@ public class Storage {
                 task = new Todo(description);
                 break;
             case "D":
-                task = new Deadline(description, parts[3]);
+                LocalDateTime by = DateTimeUtil.parse(parts[3]);
+                task = new Deadline(description, by);
                 break;
             case "E":
-                task = new Event(description, parts[3], parts[4]);
+                LocalDateTime from = DateTimeUtil.parse(parts[3]);
+                LocalDateTime to = DateTimeUtil.parse(parts[4]);
+                task = new Event(description, from, to);
                 break;
             default:
                 return null; // corrupted line → skip safely
