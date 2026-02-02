@@ -1,4 +1,7 @@
+package kevin.task;
+
 import java.io.IOException;
+import kevin.storage.Storage;
 
 public class TaskList {
     private final Task[] tasks;

@@ -1,4 +1,10 @@
+package kevin.command;
+
 import java.time.LocalDateTime;
+
+import kevin.task.TaskList;
+import kevin.ui.Ui;
+import kevin.storage.Storage;
 
 public class Command {
 

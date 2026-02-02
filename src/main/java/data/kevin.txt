@@ -1,2 +1,0 @@
-T | 0 | read book
-D | 0 | read book | 2026-01-01 1800

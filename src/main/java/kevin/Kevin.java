@@ -1,4 +1,16 @@
+package kevin;
+
 import java.util.Scanner;
+
+import kevin.ui.Ui;
+import kevin.parser.Parser;
+import kevin.command.Command;
+import kevin.storage.Storage;
+import kevin.task.Deadline;
+import kevin.task.Event;
+import kevin.task.Task;
+import kevin.task.TaskList;
+import kevin.task.Todo;
 
 public class Kevin {
 
