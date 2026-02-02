@@ -1,2 +1,2 @@
-D | 0 | read book | 2026-01-01 1600
-E | 0 | family function | 2026-01-01 1600 | 2026-01-01 1800
+T | 0 | read book
+D | 0 | read book | 2026-01-01 1800
