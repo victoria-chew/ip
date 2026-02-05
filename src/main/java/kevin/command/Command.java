@@ -5,7 +5,9 @@ import java.time.LocalDateTime;
 import kevin.task.TaskList;
 import kevin.ui.Ui;
 import kevin.storage.Storage;
-
+/**
+ * Represents an executable user command in the application.
+ */
 public class Command {
 
     public enum Type {

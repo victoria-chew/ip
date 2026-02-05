@@ -1,5 +1,7 @@
 package kevin.task;
-
+/**
+ * Represents a generic task with a description and completion status.
+ */
 public class Task {
     private final String description;
     private boolean isDone;

@@ -1,5 +1,7 @@
 package kevin.task;
-
+/**
+ * Represents a task that must be completed by a specific date/time.
+ */
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
@@ -14,6 +16,11 @@ public class Deadline extends Task {
         this.by = by;
     }
 
+    /**
+     * Returns the due date/time of this deadline.
+     *
+     * @return Due date/time of the deadline.
+     */
     public LocalDateTime getBy() {
         return by;
     }

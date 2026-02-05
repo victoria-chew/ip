@@ -5,10 +5,17 @@ import java.time.LocalDateTime;
 import kevin.command.*;
 import kevin.task.*;
 import kevin.util.DateTimeUtil;
-
-
+/**
+ * Parses user input strings into executable {@link Command} objects.
+ */
 public class Parser {
-
+    /**
+     * Parses the user input into a {@link Command}.
+     *
+     * @param input Full user input string.
+     * @return The corresponding command object.
+     * @throws IllegalArgumentException If the input does not match any supported command format.
+     */
     public Command parse(String input) {
         input = input.trim();
 

@@ -9,7 +9,9 @@ import java.time.LocalDateTime;
 
 import kevin.task.*;
 import kevin.util.DateTimeUtil;
-
+/**
+ * Handles loading tasks from and saving tasks to the hard disk.
+ */
 public class Storage {
 
     // Relative path
@@ -63,9 +65,6 @@ public class Storage {
         }
     }
 
-    /**
-     * Converts a line from the file into a Task object.
-     */
     private Task parseTask(String line) {
         // Format examples:
         // T | 1 | read book

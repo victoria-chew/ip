@@ -2,7 +2,10 @@ package kevin.task;
 
 import java.io.IOException;
 import kevin.storage.Storage;
-
+/**
+ * Stores and manages a list of tasks in the application.
+ * Supports adding, deleting, marking, and unmarking tasks.
+ */
 public class TaskList {
     private final Task[] tasks;
     private int count;
@@ -14,15 +17,29 @@ public class TaskList {
         this.storage = storage;
     }
 
-    // Load tasks at startup
+    /**
+     * Loads tasks from storage into this task list.
+     */
     public void load() {
         count = storage.load(tasks);
     }
 
+    /**
+     * Returns the number of tasks currently in the list.
+     *
+     * @return Number of tasks in the list.
+     */
     public int size() {
         return count;
     }
 
+    /**
+     * Returns the task at the given 1-based index.
+     *
+     * @param oneBasedIndex Index of the task (1-based).
+     * @return The task at the specified index.
+     * @throws IllegalArgumentException If the index is out of range.
+     */
     public Task get(int oneBasedIndex) {
         int idx = oneBasedIndex - 1;
         if (idx < 0 || idx >= count) {
@@ -31,6 +48,12 @@ public class TaskList {
         return tasks[idx];
     }
 
+    /**
+     * Adds a task to the list and saves the updated list to storage.
+     *
+     * @param task Task to be added.
+     * @throws IllegalStateException If the task list is full.
+     */
     public void add(Task task) {
         if (count >= tasks.length) {
             throw new IllegalStateException("Task list is full.");
@@ -40,6 +63,13 @@ public class TaskList {
         save();
     }
 
+    /**
+     * Deletes the task at the given 1-based index and saves the updated list to storage.
+     *
+     * @param oneBasedIndex Index of the task to delete (1-based).
+     * @return The deleted task.
+     * @throws IllegalArgumentException If the index is out of range.
+     */
     public Task delete(int oneBasedIndex) {
         int idx = oneBasedIndex - 1;
         if (idx < 0 || idx >= count) {
@@ -58,6 +88,13 @@ public class TaskList {
         return removed;
     }
 
+    /**
+     * Marks the task at the given 1-based index as done and saves the updated list to storage.
+     *
+     * @param oneBasedIndex Index of the task to mark as done (1-based).
+     * @return The updated task.
+     * @throws IllegalArgumentException If the index is out of range.
+     */
     public Task mark(int oneBasedIndex) {
         Task t = get(oneBasedIndex);
         t.markDone();
@@ -65,6 +102,13 @@ public class TaskList {
         return t;
     }
 
+    /**
+     * Marks the task at the given 1-based index as not done and saves the updated list to storage.
+     *
+     * @param oneBasedIndex Index of the task to unmark (1-based).
+     * @return The updated task.
+     * @throws IllegalArgumentException If the index is out of range.
+     */
     public Task unmark(int oneBasedIndex) {
         Task t = get(oneBasedIndex);
         t.markUndone();
@@ -72,6 +116,11 @@ public class TaskList {
         return t;
     }
 
+    /**
+     * Formats all tasks in the list into a numbered string for display to the user.
+     *
+     * @return Formatted string of tasks.
+     */
     public String formatList() {
         StringBuilder sb = new StringBuilder();
         sb.append("Here are the tasks in your list:\n");
@@ -85,8 +134,7 @@ public class TaskList {
         try {
             storage.save(tasks, count);
         } catch (IOException e) {
-            // Don't crash the app if saving fails
-            // You can also choose to throw a custom exception instead.
+            //to not crash the app if saving fails
             System.out.println("OOPS! Could not save tasks to file.");
         }
     }

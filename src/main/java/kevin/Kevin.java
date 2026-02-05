@@ -11,7 +11,9 @@ import kevin.task.Event;
 import kevin.task.Task;
 import kevin.task.TaskList;
 import kevin.task.Todo;
-
+/**
+ * The main entry point of the Kevin task management application.
+ */
 public class Kevin {
 
     private final Ui ui;

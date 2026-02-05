@@ -1,5 +1,7 @@
 package kevin.task;
-
+/**
+ * Represents a todo task with no associated date/time.
+ */
 public class Todo extends Task {
     public Todo(String description) {
         super(description);
