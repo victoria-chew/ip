@@ -3,6 +3,9 @@ package kevin.util;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Formats the YYYY-MM-ddTHHmm to YYYY-MM-dd HHmm
+ */
 public class DateTimeUtil {
 
     // Accepts: 2026-11-01 1600
@@ -16,6 +19,9 @@ public class DateTimeUtil {
         return LocalDateTime.parse(s, INPUT);
     }
 
+    /**
+     * formats the time to 12hr time
+     */
     public static String format(LocalDateTime dt) {
         // Convert AM/PM to am/pm to match your desired format
         return dt.format(OUTPUT).replace("AM", "am").replace("PM", "pm");

@@ -1,15 +1,14 @@
 package kevin.command;
 
 import java.time.LocalDateTime;
-
-import kevin.task.TaskList;
-import kevin.ui.Ui;
-import kevin.storage.Storage;
 /**
  * Represents an executable user command in the application.
  */
 public class Command {
 
+    /**
+     * Types of commands
+     */
     public enum Type {
         BYE,
         LIST,
@@ -27,9 +26,9 @@ public class Command {
     // Optional fields depending on command
     private String description;
     private int index; // for mark / unmark / delete (1-based)
-    private LocalDateTime by;     // deadline
-    private LocalDateTime from;   // event
-    private LocalDateTime to;     // event
+    private LocalDateTime by; // deadline
+    private LocalDateTime from; // event
+    private LocalDateTime to; // event
 
     private Command(Type type) {
         this.type = type;
@@ -41,22 +40,34 @@ public class Command {
         return new Command(Type.BYE);
     }
 
+    /**
+     * find command
+     */
     public static Command find(String keyword) {
         Command c = new Command(Type.FIND);
-        c.description = keyword;   // reuse description field to store keyword
+        c.description = keyword; // reuse description field to store keyword
         return c;
     }
 
+    /**
+     * list command
+     */
     public static Command list() {
         return new Command(Type.LIST);
     }
 
+    /**
+     * todo command
+     */
     public static Command todo(String description) {
         Command c = new Command(Type.TODO);
         c.description = description;
         return c;
     }
 
+    /**
+     * deadline command
+     */
     public static Command deadline(String description, LocalDateTime by) {
         Command c = new Command(Type.DEADLINE);
         c.description = description;
@@ -64,6 +75,9 @@ public class Command {
         return c;
     }
 
+    /**
+     * event command
+     */
     public static Command event(String description, LocalDateTime from, LocalDateTime to) {
         Command c = new Command(Type.EVENT);
         c.description = description;
@@ -72,18 +86,27 @@ public class Command {
         return c;
     }
 
+    /**
+     * mark command
+     */
     public static Command mark(int index) {
         Command c = new Command(Type.MARK);
         c.index = index;
         return c;
     }
 
+    /**
+     * unmark command
+     */
     public static Command unmark(int index) {
         Command c = new Command(Type.UNMARK);
         c.index = index;
         return c;
     }
 
+    /**
+     * Delete command
+     */
     public static Command delete(int index) {
         Command c = new Command(Type.DELETE);
         c.index = index;

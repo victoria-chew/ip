@@ -2,8 +2,7 @@ package kevin.parser;
 
 import java.time.LocalDateTime;
 
-import kevin.command.*;
-import kevin.task.*;
+import kevin.command.Command;
 import kevin.util.DateTimeUtil;
 /**
  * Parses user input strings into executable {@link Command} objects.
@@ -88,21 +87,24 @@ public class Parser {
             // event <desc> /from <dt> /to <dt>
             String[] partsFrom = rest.split(" /from ", 2);
             if (partsFrom.length < 2) {
-                throw new IllegalArgumentException("Event format: event <desc> /from <yyyy-MM-dd HHmm> /to <yyyy-MM-dd HHmm>");
+                throw new IllegalArgumentException("Event format: event <desc> "
+                        + "/from <yyyy-MM-dd HHmm> /to <yyyy-MM-dd HHmm>");
             }
 
             String desc = partsFrom[0].trim();
 
             String[] partsTo = partsFrom[1].split(" /to ", 2);
             if (partsTo.length < 2) {
-                throw new IllegalArgumentException("Event format: event <desc> /from <yyyy-MM-dd HHmm> /to <yyyy-MM-dd HHmm>");
+                throw new IllegalArgumentException("Event format: event <desc> "
+                        + "/from <yyyy-MM-dd HHmm> /to <yyyy-MM-dd HHmm>");
             }
 
             String fromStr = partsTo[0].trim();
             String toStr = partsTo[1].trim();
 
             if (desc.isEmpty() || fromStr.isEmpty() || toStr.isEmpty()) {
-                throw new IllegalArgumentException("Event format: event <desc> /from <yyyy-MM-dd HHmm> /to <yyyy-MM-dd HHmm>");
+                throw new IllegalArgumentException("Event format: event <desc> "
+                        + "/from <yyyy-MM-dd HHmm> /to <yyyy-MM-dd HHmm>");
             }
 
             LocalDateTime from = parseDateTime(fromStr);

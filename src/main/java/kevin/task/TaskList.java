@@ -1,6 +1,7 @@
 package kevin.task;
 
 import java.io.IOException;
+
 import kevin.storage.Storage;
 /**
  * Stores and manages a list of tasks in the application.
@@ -11,6 +12,9 @@ public class TaskList {
     private int count;
     private final Storage storage;
 
+    /**
+     * Constructor
+     */
     public TaskList(int capacity, Storage storage) {
         this.tasks = new Task[capacity];
         this.count = 0;
@@ -130,6 +134,9 @@ public class TaskList {
         return sb.toString().trim(); // removes last newline
     }
 
+    /**
+     * constructs the list of found tasks
+     */
     public Task[] find(String keyword) {
         String needle = keyword.toLowerCase();
         Task[] temp = new Task[count];

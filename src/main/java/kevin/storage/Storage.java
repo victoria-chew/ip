@@ -3,12 +3,15 @@ package kevin.storage;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Scanner;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Scanner;
 
-import kevin.task.*;
+import kevin.task.Deadline;
+import kevin.task.Event;
+import kevin.task.Task;
+import kevin.task.Todo;
 import kevin.util.DateTimeUtil;
+
 /**
  * Handles loading tasks from and saving tasks to the hard disk.
  */
@@ -80,20 +83,20 @@ public class Storage {
         Task task;
 
         switch (type) {
-            case "T":
-                task = new Todo(description);
-                break;
-            case "D":
-                LocalDateTime by = DateTimeUtil.parse(parts[3]);
-                task = new Deadline(description, by);
-                break;
-            case "E":
-                LocalDateTime from = DateTimeUtil.parse(parts[3]);
-                LocalDateTime to = DateTimeUtil.parse(parts[4]);
-                task = new Event(description, from, to);
-                break;
-            default:
-                return null; // corrupted line → skip safely
+        case "T":
+            task = new Todo(description);
+            break;
+        case "D":
+            LocalDateTime by = DateTimeUtil.parse(parts[3]);
+            task = new Deadline(description, by);
+            break;
+        case "E":
+            LocalDateTime from = DateTimeUtil.parse(parts[3]);
+            LocalDateTime to = DateTimeUtil.parse(parts[4]);
+            task = new Event(description, from, to);
+            break;
+        default:
+            return null; // corrupted line → skip safely
         }
 
         if (isDone) {

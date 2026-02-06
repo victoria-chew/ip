@@ -1,16 +1,20 @@
 package kevin.task;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+import kevin.util.DateTimeUtil;
+
 /**
  * Represents a task that must be completed by a specific date/time.
  */
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.LocalDateTime;
-import kevin.util.DateTimeUtil;
-
 public class Deadline extends Task {
     private static final DateTimeFormatter OUTPUT_FORMAT = DateTimeFormatter.ofPattern("MMM dd yyyy");
     private LocalDateTime by;
 
+    /**
+     * Constructor
+     */
     public Deadline(String description, LocalDateTime by) {
         super(description);
         this.by = by;

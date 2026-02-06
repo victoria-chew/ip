@@ -2,15 +2,16 @@ package kevin;
 
 import java.util.Scanner;
 
-import kevin.ui.Ui;
-import kevin.parser.Parser;
 import kevin.command.Command;
+import kevin.parser.Parser;
 import kevin.storage.Storage;
 import kevin.task.Deadline;
 import kevin.task.Event;
 import kevin.task.Task;
 import kevin.task.TaskList;
 import kevin.task.Todo;
+import kevin.ui.Ui;
+
 /**
  * The main entry point of the Kevin task management application.
  */
@@ -20,6 +21,9 @@ public class Kevin {
     private final Parser parser;
     private final TaskList taskList;
 
+    /**
+     * Constructor
+     */
     public Kevin() {
         ui = new Ui();
         parser = new Parser();
@@ -29,6 +33,9 @@ public class Kevin {
         taskList.load();
     }
 
+    /**
+     * Starts up the Kevin Chatbot
+     */
     public void run() {
         Scanner scanner = new Scanner(System.in);
         ui.showWelcome();
@@ -40,61 +47,59 @@ public class Kevin {
                 Command c = parser.parse(input);
 
                 switch (c.getType()) {
+                case BYE:
+                    ui.showGoodbye();
+                    return; // exits run()
+                case LIST:
+                    ui.showList(taskList.formatList());
+                    break;
 
-                    case BYE:
-                        ui.showGoodbye();
-                        return; // exits run()
+                case TODO: {
+                    Task t = new Todo(c.getDescription());
+                    taskList.add(t);
+                    ui.showAdded(t, taskList.size());
+                    break;
+                }
 
-                    case LIST:
-                        ui.showList(taskList.formatList());
-                        break;
+                case FIND: {
+                    Task[] matches = taskList.find(c.getDescription());
+                    ui.showFound(matches);
+                    break;
+                }
 
-                    case TODO: {
-                        Task t = new Todo(c.getDescription());
-                        taskList.add(t);                 // TaskList autosaves
-                        ui.showAdded(t, taskList.size());
-                        break;
-                    }
+                case DEADLINE: {
+                    Task t = new Deadline(c.getDescription(), c.getBy());
+                    taskList.add(t);
+                    ui.showAdded(t, taskList.size());
+                    break;
+                }
 
-                    case FIND: {
-                        Task[] matches = taskList.find(c.getDescription());
-                        ui.showFound(matches);
-                        break;
-                    }
+                case EVENT: {
+                    Task t = new Event(c.getDescription(), c.getFrom(), c.getTo());
+                    taskList.add(t);
+                    ui.showAdded(t, taskList.size());
+                    break;
+                }
 
-                    case DEADLINE: {
-                        Task t = new Deadline(c.getDescription(), c.getBy());
-                        taskList.add(t);
-                        ui.showAdded(t, taskList.size());
-                        break;
-                    }
+                case MARK: {
+                    Task t = taskList.mark(c.getIndex()); // c.getIndex() is 1-based
+                    ui.showMarked(t);
+                    break;
+                }
 
-                    case EVENT: {
-                        Task t = new Event(c.getDescription(), c.getFrom(), c.getTo());
-                        taskList.add(t);
-                        ui.showAdded(t, taskList.size());
-                        break;
-                    }
+                case UNMARK: {
+                    Task t = taskList.unmark(c.getIndex());
+                    ui.showUnmarked(t);
+                    break;
+                }
 
-                    case MARK: {
-                        Task t = taskList.mark(c.getIndex()); // c.getIndex() is 1-based
-                        ui.showMarked(t);
-                        break;
-                    }
+                case DELETE:
+                    Task removed = taskList.delete(c.getIndex());
+                    ui.showDeleted(removed, taskList.size());
+                    break;
 
-                    case UNMARK: {
-                        Task t = taskList.unmark(c.getIndex());
-                        ui.showUnmarked(t);
-                        break;
-                    }
-
-                    case DELETE:
-                        Task removed = taskList.delete(c.getIndex());
-                        ui.showDeleted(removed, taskList.size());
-                        break;
-
-                    default:
-                        ui.showError("I don't know what that means.");
+                default:
+                    ui.showError("I don't know what that means.");
                 }
 
             } catch (Exception e) {

@@ -6,6 +6,9 @@ public class Task {
     private final String description;
     private boolean isDone;
 
+    /**
+     * Constructor
+     */
     public Task(String description) {
         this.description = description;
         this.isDone = false;
@@ -27,9 +30,12 @@ public class Task {
         return isDone;
     }
 
+    /**
+     * Format to be saved into hard disk
+     * Default: treat as Todo-like storage
+     * Format: T | doneFlag | description
+     */
     public String toFileString() {
-        // Default: treat as Todo-like storage
-        // Format: T | doneFlag | description
         return "T | " + (isDone ? "1" : "0") + " | " + description;
     }
 

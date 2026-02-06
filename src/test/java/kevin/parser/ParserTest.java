@@ -1,6 +1,9 @@
 package kevin.parser;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,7 +37,7 @@ public class ParserTest {
         }
     }
 
-    private void assertIAE(String input, String expectedMessage) {
+    private void assertIae(String input, String expectedMessage) {
         IllegalArgumentException ex =
                 assertThrows(IllegalArgumentException.class, () -> parser.parse(input));
         assertEquals(expectedMessage, ex.getMessage());
@@ -76,18 +79,18 @@ public class ParserTest {
     }
 
     @Test
-    void parse_mark_missingIndex_throws() {
-        assertIAE("mark", "Please specify a task number. Example: mark 2");
+    void parseMarkMissingIndexThrows() {
+        assertIae("mark", "Please specify a task number. Example: mark 2");
     }
 
     @Test
-    void parse_mark_nonIntegerIndex_throws() {
-        assertIAE("mark abc", "Task number must be an integer. Example: mark 2");
+    void parseMarkNonIntegerIndexThrows() {
+        assertIae("mark abc", "Task number must be an integer. Example: mark 2");
     }
 
     @Test
-    void parse_mark_zeroIndex_throws() {
-        assertIAE("mark 0", "Task number must be >= 1.");
+    void parseMarkZeroIndexThrows() {
+        assertIae("mark 0", "Task number must be >= 1.");
     }
 
     // -------- todo --------
@@ -98,8 +101,8 @@ public class ParserTest {
     }
 
     @Test
-    void parse_todo_missingDescription_throws() {
-        assertIAE("todo", "The description of a todo cannot be empty.");
+    void parseTodoMissingDescriptionThrows() {
+        assertIae("todo", "The description of a todo cannot be empty.");
     }
 
     // -------- deadline --------
@@ -110,19 +113,19 @@ public class ParserTest {
     }
 
     @Test
-    void parse_deadline_missingDescription_throws() {
-        assertIAE("deadline", "The description of a deadline cannot be empty.");
+    void parseDeadlineMissingDescriptionThrows() {
+        assertIae("deadline", "The description of a deadline cannot be empty.");
     }
 
     @Test
-    void parse_deadline_missingBySeparator_throws() {
-        assertIAE("deadline finish report",
+    void parseDeadlineMissingBySeparatorThrows() {
+        assertIae("deadline finish report",
                 "Deadline format: deadline <desc> /by <yyyy-MM-dd HHmm>");
     }
 
     @Test
-    void parse_deadline_invalidDateTime_throws() {
-        assertIAE("deadline finish report /by not-a-date",
+    void parseDeadlineInvalidDateTimeThrows() {
+        assertIae("deadline finish report /by not-a-date",
                 "Invalid date-time. Use yyyy-MM-dd HHmm (e.g. 2026-11-01 1600).");
     }
 
@@ -134,21 +137,21 @@ public class ParserTest {
     }
 
     @Test
-    void parse_event_missingDescription_throws() {
-        assertIAE("event", "The description of an event cannot be empty.");
+    void parseEventMissingDescriptionThrows() {
+        assertIae("event", "The description of an event cannot be empty.");
     }
 
     @Test
-    void parse_event_missingFromOrTo_throws() {
-        assertIAE("event meeting",
+    void parseEventMissingFromOrToThrows() {
+        assertIae("event meeting",
                 "Event format: event <desc> /from <yyyy-MM-dd HHmm> /to <yyyy-MM-dd HHmm>");
-        assertIAE("event meeting /from 2026-11-01 1600",
+        assertIae("event meeting /from 2026-11-01 1600",
                 "Event format: event <desc> /from <yyyy-MM-dd HHmm> /to <yyyy-MM-dd HHmm>");
     }
 
     @Test
-    void parse_event_invalidDateTime_throws() {
-        assertIAE("event meeting /from bad /to 2026-11-01 1800",
+    void parseEventInvalidDateTimeThrows() {
+        assertIae("event meeting /from bad /to 2026-11-01 1800",
                 "Invalid date-time. Use yyyy-MM-dd HHmm (e.g. 2026-11-01 1600).");
     }
 
@@ -156,6 +159,6 @@ public class ParserTest {
 
     @Test
     void parse_unknown_throws() {
-        assertIAE("wat", "I don't know what that means.");
+        assertIae("wat", "I don't know what that means.");
     }
 }
