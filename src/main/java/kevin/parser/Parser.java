@@ -31,6 +31,14 @@ public class Parser {
             return Command.mark(parseIndex(input, "mark"));
         }
 
+        if (input.equals("find") || input.startsWith("find ")) {
+            String keyword = input.length() > 4 ? input.substring(4).trim() : "";
+            if (keyword.isEmpty()) {
+                throw new IllegalArgumentException("The keyword of a find command cannot be empty.");
+            }
+            return Command.find(keyword);
+        }
+
         if (input.startsWith("unmark")) {
             return Command.unmark(parseIndex(input, "unmark"));
         }

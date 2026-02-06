@@ -130,6 +130,22 @@ public class TaskList {
         return sb.toString().trim(); // removes last newline
     }
 
+    public Task[] find(String keyword) {
+        String needle = keyword.toLowerCase();
+        Task[] temp = new Task[count];
+        int m = 0;
+
+        for (int i = 0; i < count; i++) {
+            if (tasks[i].getDescription().toLowerCase().contains(needle)) {
+                temp[m++] = tasks[i];
+            }
+        }
+
+        Task[] matches = new Task[m];
+        System.arraycopy(temp, 0, matches, 0, m);
+        return matches;
+    }
+
     private void save() {
         try {
             storage.save(tasks, count);

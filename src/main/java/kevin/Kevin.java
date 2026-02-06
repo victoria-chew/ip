@@ -56,6 +56,12 @@ public class Kevin {
                         break;
                     }
 
+                    case FIND: {
+                        Task[] matches = taskList.find(c.getDescription());
+                        ui.showFound(matches);
+                        break;
+                    }
+
                     case DEADLINE: {
                         Task t = new Deadline(c.getDescription(), c.getBy());
                         taskList.add(t);
@@ -82,11 +88,10 @@ public class Kevin {
                         break;
                     }
 
-                    case DELETE: {
+                    case DELETE:
                         Task removed = taskList.delete(c.getIndex());
                         ui.showDeleted(removed, taskList.size());
                         break;
-                    }
 
                     default:
                         ui.showError("I don't know what that means.");

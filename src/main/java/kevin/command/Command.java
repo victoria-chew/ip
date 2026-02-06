@@ -18,7 +18,8 @@ public class Command {
         EVENT,
         MARK,
         UNMARK,
-        DELETE
+        DELETE,
+        FIND
     }
 
     private final Type type;
@@ -38,6 +39,12 @@ public class Command {
 
     public static Command bye() {
         return new Command(Type.BYE);
+    }
+
+    public static Command find(String keyword) {
+        Command c = new Command(Type.FIND);
+        c.description = keyword;   // reuse description field to store keyword
+        return c;
     }
 
     public static Command list() {
