@@ -16,6 +16,7 @@ public class Parser {
      * @throws IllegalArgumentException If the input does not match any supported command format.
      */
     public Command parse(String input) {
+        assert input != null : "Input should not be null";
         input = input.trim();
 
         if (input.equals("bye")) {

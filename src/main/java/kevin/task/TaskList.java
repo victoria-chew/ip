@@ -46,6 +46,9 @@ public class TaskList {
      */
     public Task get(int oneBasedIndex) {
         int idx = oneBasedIndex - 1;
+
+        assert idx == oneBasedIndex - 1 : "Index conversion failed";
+
         if (idx < 0 || idx >= count) {
             throw new IllegalArgumentException("That task number is out of range.");
         }
@@ -59,11 +62,17 @@ public class TaskList {
      * @throws IllegalStateException If the task list is full.
      */
     public void add(Task task) {
+        assert count >= 0 && count <= tasks.length : "TaskList count out of bounds";
+        assert task != null : "Cannot add null task";
+
         if (count >= tasks.length) {
             throw new IllegalStateException("Task list is full.");
         }
         tasks[count] = task;
         count++;
+
+        assert count <= tasks.length : "TaskList overflow after add";
+
         save();
     }
 
