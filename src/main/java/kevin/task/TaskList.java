@@ -13,7 +13,7 @@ public class TaskList {
     private final Storage storage;
 
     /**
-     * Constructor
+     * Creates a task list with a fixed capacity.
      */
     public TaskList(int capacity, Storage storage) {
         this.tasks = new Task[capacity];

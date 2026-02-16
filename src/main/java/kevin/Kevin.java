@@ -22,7 +22,7 @@ public class Kevin {
     private final TaskList taskList;
 
     /**
-     * Constructor
+     * Creates a Kevin instance with default dependencies and loads persisted tasks.
      */
     public Kevin() {
         ui = new Ui();
@@ -34,63 +34,80 @@ public class Kevin {
     }
 
     /**
-     * Generates a response for the user's chat message.
-     * This is used by the JavaFX GUI.
+     * Generates a response for the user's message (used by the JavaFX GUI).
+     *
+     * @param input The raw user input.
+     * @return The message to display in the UI.
      */
     public String getResponse(String input) {
-        try {
-            Command c = parser.parse(input);
-
-            switch (c.getType()) {
-                case HI:
-                    return ui.showWelcome();
-                case BYE:
-                    return ui.showGoodbye();
-                case LIST:
-                    return ui.showList(taskList.formatList());
-                case TODO: {
-                    Task t = new Todo(c.getDescription());
-                    taskList.add(t);
-                    return ui.showAdded(t, taskList.size());
-                }
-
-                case FIND: {
-                    Task[] matches = taskList.find(c.getDescription());
-                    return ui.showFound(matches);
-                }
-
-                case DEADLINE: {
-                    Task t = new Deadline(c.getDescription(), c.getBy());
-                    taskList.add(t);
-                    return ui.showAdded(t, taskList.size());
-                }
-
-                case EVENT: {
-                    Task t = new Event(c.getDescription(), c.getFrom(), c.getTo());
-                    taskList.add(t);
-                    return ui.showAdded(t, taskList.size());
-                }
-
-                case MARK: {
-                    Task t = taskList.mark(c.getIndex()); // c.getIndex() is 1-based
-                    return ui.showMarked(t);
-                }
-
-                case UNMARK: {
-                    Task t = taskList.unmark(c.getIndex());
-                    return ui.showUnmarked(t);
-                }
-
-                case DELETE:
-                    Task removed = taskList.delete(c.getIndex());
-                    return ui.showDeleted(removed, taskList.size());
-
-                default:
-                    return ui.showError("I don't know what that means.");
-            }
-
-        } catch (Exception e) {
-            return ui.showError(e.getMessage());
+        if (input == null) {
+            return ui.showError("Input cannot be null.");
         }
+
+        try {
+            Command command = parser.parse(input.trim());
+            return handle(command);
+        } catch (IllegalArgumentException e) {
+            // Expected user errors (e.g., invalid index, missing description).
+            return ui.showError(e.getMessage());
+        } catch (Exception e) {
+            // Unexpected errors; keep message generic so you don't leak internals.
+            return ui.showError("Something went wrong. Please try again.");
+        }
+    }
+
+    private String handle(Command command) {
+        switch (command.getType()) {
+            case HI:
+                return ui.showWelcome();
+            case BYE:
+                return ui.showGoodbye();
+            case LIST:
+                return ui.showList(taskList.formatList());
+            case TODO:
+                return handleTodo(command);
+            case DEADLINE:
+                return handleDeadline(command);
+            case EVENT:
+                return handleEvent(command);
+            case FIND:
+                return handleFind(command);
+            case MARK:
+                return ui.showMarked(taskList.mark(command.getIndex()));
+            case UNMARK:
+                return ui.showUnmarked(taskList.unmark(command.getIndex()));
+            case DELETE:
+                return handleDelete(command);
+            default:
+                return ui.showError("I don't know what that means.");
+        }
+    }
+
+    private String handleTodo(Command command) {
+        Task task = new Todo(command.getDescription());
+        taskList.add(task);
+        return ui.showAdded(task, taskList.size());
+    }
+
+    private String handleDeadline(Command command) {
+        Task task = new Deadline(command.getDescription(), command.getBy());
+        taskList.add(task);
+        return ui.showAdded(task, taskList.size());
+    }
+
+    private String handleEvent(Command command) {
+        Task task = new Event(command.getDescription(), command.getFrom(), command.getTo());
+        taskList.add(task);
+        return ui.showAdded(task, taskList.size());
+    }
+
+    private String handleFind(Command command) {
+        Task[] matches = taskList.find(command.getDescription());
+        return ui.showFound(matches);
+    }
+
+    private String handleDelete(Command command) {
+        Task removed = taskList.delete(command.getIndex());
+        return ui.showDeleted(removed, taskList.size());
     }
 }

@@ -8,6 +8,12 @@ import kevin.util.DateTimeUtil;
  * Parses user input strings into executable {@link Command} objects.
  */
 public class Parser {
+
+    private static final String DEADLINE_FORMAT_MESSAGE =
+            "Deadline format: deadline <desc> /by <yyyy-MM-dd HHmm>";
+    private static final String EVENT_FORMAT_MESSAGE =
+            "Event format: event <desc> /from <yyyy-MM-dd HHmm> /to <yyyy-MM-dd HHmm>";
+
     /**
      * Parses the user input into a {@link Command}.
      *
@@ -67,7 +73,7 @@ public class Parser {
             }
 
             if (!rest.contains(" /by ")) {
-                throw new IllegalArgumentException("Deadline format: deadline <desc> /by <yyyy-MM-dd HHmm>");
+                throw new IllegalArgumentException(DEADLINE_FORMAT_MESSAGE);
             }
 
             String[] parts = rest.split(" /by ", 2);
@@ -75,7 +81,7 @@ public class Parser {
             String byStr = parts[1].trim();
 
             if (desc.isEmpty() || byStr.isEmpty()) {
-                throw new IllegalArgumentException("Deadline format: deadline <desc> /by <yyyy-MM-dd HHmm>");
+                throw new IllegalArgumentException(DEADLINE_FORMAT_MESSAGE);
             }
 
             LocalDateTime by = parseDateTime(byStr);
@@ -92,24 +98,21 @@ public class Parser {
             // event <desc> /from <dt> /to <dt>
             String[] partsFrom = rest.split(" /from ", 2);
             if (partsFrom.length < 2) {
-                throw new IllegalArgumentException("Event format: event <desc> "
-                        + "/from <yyyy-MM-dd HHmm> /to <yyyy-MM-dd HHmm>");
+                throw new IllegalArgumentException(EVENT_FORMAT_MESSAGE);
             }
 
             String desc = partsFrom[0].trim();
 
             String[] partsTo = partsFrom[1].split(" /to ", 2);
             if (partsTo.length < 2) {
-                throw new IllegalArgumentException("Event format: event <desc> "
-                        + "/from <yyyy-MM-dd HHmm> /to <yyyy-MM-dd HHmm>");
+                throw new IllegalArgumentException(EVENT_FORMAT_MESSAGE);
             }
 
             String fromStr = partsTo[0].trim();
             String toStr = partsTo[1].trim();
 
             if (desc.isEmpty() || fromStr.isEmpty() || toStr.isEmpty()) {
-                throw new IllegalArgumentException("Event format: event <desc> "
-                        + "/from <yyyy-MM-dd HHmm> /to <yyyy-MM-dd HHmm>");
+                throw new IllegalArgumentException(EVENT_FORMAT_MESSAGE);
             }
 
             LocalDateTime from = parseDateTime(fromStr);
