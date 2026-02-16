@@ -34,81 +34,63 @@ public class Kevin {
     }
 
     /**
-     * Starts up the Kevin Chatbot
+     * Generates a response for the user's chat message.
+     * This is used by the JavaFX GUI.
      */
-    public void run() {
-        Scanner scanner = new Scanner(System.in);
-        ui.showWelcome();
+    public String getResponse(String input) {
+        try {
+            Command c = parser.parse(input);
 
-        while (true) {
-            String input = scanner.nextLine();
-
-            try {
-                Command c = parser.parse(input);
-
-                switch (c.getType()) {
+            switch (c.getType()) {
+                case HI:
+                    return ui.showWelcome();
                 case BYE:
-                    ui.showGoodbye();
-                    return; // exits run()
+                    return ui.showGoodbye();
                 case LIST:
-                    ui.showList(taskList.formatList());
-                    break;
-
+                    return ui.showList(taskList.formatList());
                 case TODO: {
                     Task t = new Todo(c.getDescription());
                     taskList.add(t);
-                    ui.showAdded(t, taskList.size());
-                    break;
+                    return ui.showAdded(t, taskList.size());
                 }
 
                 case FIND: {
                     Task[] matches = taskList.find(c.getDescription());
-                    ui.showFound(matches);
-                    break;
+                    return ui.showFound(matches);
                 }
 
                 case DEADLINE: {
                     Task t = new Deadline(c.getDescription(), c.getBy());
                     taskList.add(t);
-                    ui.showAdded(t, taskList.size());
-                    break;
+                    return ui.showAdded(t, taskList.size());
                 }
 
                 case EVENT: {
                     Task t = new Event(c.getDescription(), c.getFrom(), c.getTo());
                     taskList.add(t);
-                    ui.showAdded(t, taskList.size());
-                    break;
+                    return ui.showAdded(t, taskList.size());
                 }
 
                 case MARK: {
                     Task t = taskList.mark(c.getIndex()); // c.getIndex() is 1-based
-                    ui.showMarked(t);
-                    break;
+                    return ui.showMarked(t);
                 }
 
                 case UNMARK: {
                     Task t = taskList.unmark(c.getIndex());
-                    ui.showUnmarked(t);
-                    break;
+                    return ui.showUnmarked(t);
                 }
 
                 case DELETE:
                     Task removed = taskList.delete(c.getIndex());
-                    ui.showDeleted(removed, taskList.size());
-                    break;
+                    return ui.showDeleted(removed, taskList.size());
 
                 default:
-                    ui.showError("I don't know what that means.");
-                }
-
-            } catch (Exception e) {
-                ui.showError(e.getMessage());
+                    return ui.showError("I don't know what that means.");
             }
-        }
-    }
 
-    public static void main(String[] args) {
-        new Kevin().run();
+        } catch (Exception e) {
+            return ui.showError(e.getMessage());
+        }
     }
 }

@@ -22,6 +22,10 @@ public class Parser {
             return Command.bye();
         }
 
+        if (input.equals("hi")) {
+            return Command.hi();
+        }
+
         if (input.equals("list")) {
             return Command.list();
         }

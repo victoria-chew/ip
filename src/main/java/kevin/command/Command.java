@@ -10,6 +10,7 @@ public class Command {
      * Types of commands
      */
     public enum Type {
+        HI,
         BYE,
         LIST,
         TODO,
@@ -38,6 +39,10 @@ public class Command {
 
     public static Command bye() {
         return new Command(Type.BYE);
+    }
+
+    public static Command hi() {
+        return new Command(Type.HI);
     }
 
     /**
