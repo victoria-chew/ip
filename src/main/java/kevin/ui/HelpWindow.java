@@ -25,7 +25,7 @@ public class HelpWindow {
                 "  → Adds a simple task",
                 "  Example: todo read book",
                 "",
-                "deadline <description> /by <yyyy-mm-dd hh:mm>",
+                "deadline <description> /by <yyyy-mm-dd hhmm>",
                 "  → Adds a task with a deadline",
                 "  Example: deadline submit report /by 2026-02-20 1800",
                 "",
