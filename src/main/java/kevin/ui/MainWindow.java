@@ -1,26 +1,31 @@
 package kevin.ui;
 
+import javafx.animation.PauseTransition;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.stage.Stage;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-import javafx.animation.PauseTransition;
+import javafx.stage.Stage;
 import javafx.util.Duration;
-import javafx.application.Platform;
-
-import java.io.IOException;
 
 /**
  * Controller for the main GUI.
  */
 public class MainWindow extends AnchorPane {
+
+    private kevin.Kevin kevin;
+    private Stage helpStage;
+
+    private Image userImage = new Image(this.getClass().getResourceAsStream("/images/DaUser.png"));
+    private Image kevinImage = new Image(this.getClass().getResourceAsStream("/images/DaDuke.png"));
+
     @FXML
     private ScrollPane scrollPane;
     @FXML
@@ -29,11 +34,6 @@ public class MainWindow extends AnchorPane {
     private TextField userInput;
     @FXML
     private Button sendButton;
-
-    private kevin.Kevin kevin;
-
-    private Image userImage = new Image(this.getClass().getResourceAsStream("/images/DaUser.png"));
-    private Image kevinImage = new Image(this.getClass().getResourceAsStream("/images/DaDuke.png"));
 
     @FXML
     public void initialize() {
@@ -89,8 +89,6 @@ public class MainWindow extends AnchorPane {
         );
         userInput.clear();
     }
-
-    private Stage helpStage;
 
     private boolean openHelpWindow() {
         try {

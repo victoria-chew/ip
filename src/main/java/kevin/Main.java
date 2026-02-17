@@ -2,12 +2,12 @@ package kevin;
 
 import java.io.IOException;
 
-import kevin.ui.MainWindow;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import kevin.ui.MainWindow;
 
 /**
  * A GUI for Kevin using FXML.
@@ -28,7 +28,8 @@ public class Main extends Application {
             stage.setMinHeight(220);
             stage.setMinWidth(417);
 
-            fxmlLoader.<MainWindow>getController().setKevin(kevin);  // inject the Duke instance
+            fxmlLoader.<MainWindow>getController().setKevin(kevin); // inject the Kevin instance
+            stage.setTitle("Kevin");
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

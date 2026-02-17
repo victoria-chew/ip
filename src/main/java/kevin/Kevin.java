@@ -1,7 +1,5 @@
 package kevin;
 
-import java.util.Scanner;
-
 import kevin.command.Command;
 import kevin.parser.Parser;
 import kevin.storage.Storage;
@@ -58,28 +56,28 @@ public class Kevin {
 
     private String handle(Command command) {
         switch (command.getType()) {
-            case HI:
-                return ui.showWelcome();
-            case BYE:
-                return ui.showGoodbye();
-            case LIST:
-                return ui.showList(taskList.formatList());
-            case TODO:
-                return handleTodo(command);
-            case DEADLINE:
-                return handleDeadline(command);
-            case EVENT:
-                return handleEvent(command);
-            case FIND:
-                return handleFind(command);
-            case MARK:
-                return ui.showMarked(taskList.mark(command.getIndex()));
-            case UNMARK:
-                return ui.showUnmarked(taskList.unmark(command.getIndex()));
-            case DELETE:
-                return handleDelete(command);
-            default:
-                return ui.showError("I didn't learn this at doggy day care. Send me a HELP to view what I know!");
+        case HI:
+            return ui.showWelcome();
+        case BYE:
+            return ui.showGoodbye();
+        case LIST:
+            return ui.showList(taskList.formatList());
+        case TODO:
+            return handleTodo(command);
+        case DEADLINE:
+            return handleDeadline(command);
+        case EVENT:
+            return handleEvent(command);
+        case FIND:
+            return handleFind(command);
+        case MARK:
+            return ui.showMarked(taskList.mark(command.getIndex()));
+        case UNMARK:
+            return ui.showUnmarked(taskList.unmark(command.getIndex()));
+        case DELETE:
+            return handleDelete(command);
+        default:
+            return ui.showError("I didn't learn this at doggy day care. Send me a HELP to view what I know!");
         }
     }
 

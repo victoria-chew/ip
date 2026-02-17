@@ -159,6 +159,7 @@ public class ParserTest {
 
     @Test
     void parse_unknown_throws() {
-        assertIae("wat", "I don't know what that means.");
+        assertIae("wat",
+                "I didn't learn this at doggy day care. Send me a HELP to view what I know!");
     }
 }

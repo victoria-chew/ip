@@ -3,6 +3,9 @@ package kevin.ui;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 
+/**
+ * Controller for the main GUI.
+ */
 public class HelpWindow {
     @FXML
     private TextArea helpTextArea;
@@ -12,6 +15,9 @@ public class HelpWindow {
         helpTextArea.setText(buildHelpText());
     }
 
+    /**
+     * Main help text that is displayed in help window
+     */
     private String buildHelpText() {
         return String.join("\n",
                 "📌 Adding Tasks",

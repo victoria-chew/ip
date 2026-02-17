@@ -65,7 +65,7 @@ public class TaskListTest {
         list.add(new Todo("task one"));
 
         Task marked = list.mark(1); // ONE-BASED
-        // Usually Duke tasks show [X] when done
+        // Usually Kevin tasks show [X] when done
         assertTrue(marked.toString().contains("[X]"));
     }
 
@@ -77,7 +77,7 @@ public class TaskListTest {
 
         list.mark(1);
         Task unmarked = list.unmark(1);
-        // Usually Duke tasks show [ ] when not done
+        // Usually Kevin tasks show [ ] when not done
         assertTrue(unmarked.toString().contains("[ ]"));
     }
 }
