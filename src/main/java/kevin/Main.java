@@ -3,11 +3,11 @@ package kevin;
 import java.io.IOException;
 
 import javafx.application.Application;
-import kevin.ui.MainWindow;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import kevin.ui.MainWindow;
 
 /**
  * A GUI for Kevin using FXML.
