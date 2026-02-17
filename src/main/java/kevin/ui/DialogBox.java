@@ -1,4 +1,4 @@
-package kevin;
+package kevin.ui;
 
 import java.io.IOException;
 import java.util.Collections;

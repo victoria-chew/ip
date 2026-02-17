@@ -1,4 +1,4 @@
-package kevin;
+package kevin.ui;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;

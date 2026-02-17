@@ -121,7 +121,8 @@ public class Parser {
             return Command.event(desc, from, to);
         }
 
-        throw new IllegalArgumentException("I don't know what that means.");
+        throw new IllegalArgumentException(
+                "I didn't learn this at doggy day care. Send me a HELP to view what I know!");
     }
 
     // Parses the integer for mark/unmark/delete

@@ -10,7 +10,7 @@ public class Ui {
      * welcome message
      */
     public String showWelcome() {
-        return "Hello! I'm Kevin. What can I do for you?";
+        return "BARK BARK! I'm Kevin. What can I do for you?";
     }
 
 
@@ -18,14 +18,14 @@ public class Ui {
      * bye message
      */
     public String showGoodbye() {
-        return "Bye. Hope to see you again soon!";
+        return "BARK BYE. Hope to see you again soon!";
     }
 
     /**
      * unknown error message
      */
     public String showError(String message) {
-        return "OOPS! " + message;
+        return "GRRR! " + message;
     }
 
     /**

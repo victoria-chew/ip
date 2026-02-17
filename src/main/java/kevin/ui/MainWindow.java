@@ -1,4 +1,4 @@
-package kevin;
+package kevin.ui;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -57,7 +57,7 @@ public class MainWindow extends AnchorPane {
      */
     @FXML
     private void handleUserInput() {
-        String input = userInput.getText();
+        String input = userInput.getText().trim().toLowerCase(); // standardise lowercase
 
         // Smooth delayed exit
         if (input.trim().equalsIgnoreCase("bye")) {
@@ -73,7 +73,7 @@ public class MainWindow extends AnchorPane {
             dialogContainer.getChildren().addAll(
                     DialogBox.getUserDialog(input, userImage),
                     DialogBox.getKevinDialog(
-                            opened ? "Opened help window." : "Oops! I couldn't open the help window.",
+                            opened ? "Here is the help window! BARK." : "Oops! I couldn't open the help window.",
                             kevinImage)
             );
 

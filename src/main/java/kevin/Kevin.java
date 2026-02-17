@@ -79,7 +79,7 @@ public class Kevin {
             case DELETE:
                 return handleDelete(command);
             default:
-                return ui.showError("I don't know what that means.");
+                return ui.showError("I didn't learn this at doggy day care. Send me a HELP to view what I know!");
         }
     }
 
